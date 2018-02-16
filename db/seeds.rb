@@ -1,6 +1,9 @@
-puts "Seeding database"
+print "\nDeleting and seeding database... "
 
+Photo.destroy_all
 d = Date.today
+success_count = 0
+fails = []
 
 while d != Date.parse('Sun, 31 Dec 2017')
   
@@ -13,18 +16,28 @@ while d != Date.parse('Sun, 31 Dec 2017')
 
   agent = Mechanize.new
   agent.user_agent_alias = 'Mac Safari'
-  page = agent.get("https://apod.nasa.gov/apod/ap#{year1}#{year2}#{month1}#{month2}#{day1}#{day2}.html")
   begin
-    check_url = page.links[1].uri.to_s.start_with?('http')
-    url = check_url ? nil : "https://apod.nasa.gov/apod/#{page.links[1].uri.to_s}"
+    url = "https://apod.nasa.gov/apod/ap#{year1}#{year2}#{month1}#{month2}#{day1}#{day2}.html"
+    page = agent.get(url)
+    photo_url = page.links[1].uri.to_s.start_with?('http') ? nil : "https://apod.nasa.gov/apod/#{page.links[1].uri.to_s}"
     title = page.search('b').first.text.strip
     date = Date.parse(page.search('p')[1].children[0].text.strip)
-    Photo.create(title: title, url: url, date: date)
-    puts "\n#{title} saved to database"
+    Photo.create(title: title, url: url, photo_url: photo_url, date: date)
+    success_count += 1
     rescue => e
-      puts "\nPhoto failed to grab"
+      fails.push(url)
   end
   d = d.yesterday
   
 end
-puts "Scraping complete\n "
+
+puts "scraping complete: #{success_count} successful, #{fails.count} failed."
+
+if fails.count > 0
+  puts "Fail log:"
+  fails.each do |url|
+    puts "  #{url}"
+  end
+end
+
+puts ""

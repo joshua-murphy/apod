@@ -17,12 +17,15 @@ namespace :scrape do
       photo_url = "https://apod.nasa.gov/apod/#{page.links[1].uri.to_s}"
       title = page.search('b').first.text.strip
       date = Date.parse(page.search('p')[1].children[0].text.strip)
-      Photo.create(title: title, url: photo_url, date: date)
-      puts "\nPhoto saved to database"
-      rescue => e
-        puts "\nPhoto failed to grab"
+      if Photo.where(title: title, url: photo_url, date: date).count == 0
+        Photo.create(title: title, url: photo_url, date: date)
+        puts "\nPhoto saved to database"
       end
-    puts "Scraping complete\n "
+      puts "\nPhoto found but not saved. It appears to already be in the database."
+      rescue => e
+        puts "\nPhoto failed to grab."
+      end
+    puts "Scraping complete.\n "
   end
 
 end
