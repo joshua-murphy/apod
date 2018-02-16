@@ -8,9 +8,9 @@ class NavBar extends Component {
     return (
       <div>
         <Menu pointing secondary>
-          <Link to='/'>
-            <Menu.Item name='home' />
-          </Link>
+          <Menu.Item as={Link} to="/" name='Latest APOD' />
+          <Menu.Item as={Link} to="/all" name='All APOD' />
+          <Menu.Item as={Link} to="/random" name='Random APOD' />
         </Menu>
       </div>
     );
