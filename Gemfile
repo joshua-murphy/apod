@@ -11,10 +11,6 @@ gem 'rails', '~> 5.1.4'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
 
-gem 'omniauth', '~> 1.8.1'
-gem 'devise', '~> 4.3.0'
-gem 'devise_token_auth', '~> 0.1.42'
-
 gem 'mechanize', '~> 2.7.5'
 
 group :development, :test do
