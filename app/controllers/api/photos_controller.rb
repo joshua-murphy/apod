@@ -1,7 +1,7 @@
 class Api::PhotosController < ApplicationController
 
   def index 
-    render json: Photo.all
+    render json: Photo.order(date: :desc)
   end
 
 end
