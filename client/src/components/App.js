@@ -18,6 +18,7 @@ class App extends Component {
           <Route exact path='/random' component={Random} />
           <Route component={NoMatch} />
         </Switch>
+        <br/>
       </div>
     );
   }
