@@ -5,6 +5,7 @@ class CreatePhotos < ActiveRecord::Migration[5.1]
       t.string :url, null: false
       t.string :photo_url, null: false
       t.date :date, null: false
+      t.text :description, default: ''
 
       t.timestamps
     end

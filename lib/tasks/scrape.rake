@@ -12,18 +12,21 @@ namespace :scrape do
 
     agent = Mechanize.new
     agent.user_agent_alias = 'Mac Safari'
-    page = agent.get("https://apod.nasa.gov/apod/ap#{year1}#{year2}#{month1}#{month2}#{day1}#{day2}.html")
+    url = "https://apod.nasa.gov/apod/ap#{year1}#{year2}#{month1}#{month2}#{day1}#{day2}.html"
+    page = agent.get(url)
     begin
       photo_url = "https://apod.nasa.gov/apod/#{page.links[1].uri.to_s}"
       title = page.search('b').first.text.strip
       date = Date.parse(page.search('p')[1].children[0].text.strip)
-      if Photo.where(title: title, url: photo_url, date: date).count == 0
-        Photo.create(title: title, url: photo_url, date: date)
-        puts "\nPhoto saved to database"
+      description = page.search('p')[2].text.gsub('Explanation: ', '')
+      if Photo.where(title: title, url: url, photo_url: photo_url, date: date, description: description).count == 0
+        Photo.create(title: title, url: url, photo_url: photo_url, date: date, description: description)
+        puts "\nPhoto saved to database."
+      else
+        puts "\nPhoto found but not saved. It appears to already be in the database."
       end
-      puts "\nPhoto found but not saved. It appears to already be in the database."
       rescue => e
-        puts "\nPhoto failed to grab."
+        puts "\nPhoto failed to grab or save."
       end
     puts "Scraping complete.\n "
   end

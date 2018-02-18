@@ -22,7 +22,8 @@ while d != Date.parse('Sun, 31 Dec 2017')
     photo_url = page.links[1].uri.to_s.start_with?('http') ? nil : "https://apod.nasa.gov/apod/#{page.links[1].uri.to_s}"
     title = page.search('b').first.text.strip
     date = Date.parse(page.search('p')[1].children[0].text.strip)
-    Photo.create(title: title, url: url, photo_url: photo_url, date: date)
+    description = page.search('p')[2].text.gsub('Explanation: ', '')
+    Photo.create(title: title, url: url, photo_url: photo_url, date: date, description: description)
     success_count += 1
     rescue => e
       fails.push(url)
@@ -34,7 +35,7 @@ end
 puts "scraping complete: #{success_count} successful, #{fails.count} failed."
 
 if fails.count > 0
-  puts "Fail log:"
+  puts "Failed scrapes:"
   fails.each do |url|
     puts "  #{url}"
   end

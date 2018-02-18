@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20180215203302) do
     t.string "url", null: false
     t.string "photo_url", null: false
     t.date "date", null: false
+    t.text "description", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
