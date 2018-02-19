@@ -23,7 +23,11 @@ while d != Date.parse('Sun, 31 Dec 2017')
     title = page.search('b').first.text.strip
     date = Date.parse(page.search('p')[1].children[0].text.strip)
     description = page.search('p')[2].text.gsub('Explanation: ', '')
-    Photo.create(title: title, url: url, photo_url: photo_url, date: date, description: description)
+    photo = Photo.new(title: title, url: url, photo_url: photo_url, date: date, description: description)
+    puts photo.save ? 
+      "\nPhoto saved to database."
+    : 
+      "\nPhoto found but not saved. It is likely a video, or has an incompatible image url."
     success_count += 1
     rescue => e
       fails.push(url)
