@@ -1,15 +1,36 @@
 import React from 'react';
 import moment from 'moment';
-import { Container, Header, Image, Segment } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Button, Container, Grid, Header, Image, Segment } from 'semantic-ui-react';
 
-const Single = ({photo}) => {
+const Single = ({photo, refresh, showLatest}) => {
 
   return (
     <Container as={Segment} raised>
-      <Header as="h1" textAlign="center">
-        <Header.Content content={photo.title} />
-        <Header.Subheader content={moment(photo.date).format("MMM DD, YYYY")} />
-      </Header>
+      <Grid columns={3}>
+        <Grid.Column width={2}>
+          <Button
+            fluid
+            basic
+            onClick={() => showLatest()} 
+            content="Latest APOD" 
+          /> 
+        </Grid.Column>
+        <Grid.Column width={12}>
+          <Header as="h1" textAlign="center">
+            <Header.Content content={photo.title} />
+            <Header.Subheader content={moment(photo.date).format("MMM DD, YYYY")} />
+          </Header>
+        </Grid.Column>
+        <Grid.Column width={2}>
+          <Button 
+            fluid
+            basic
+            onClick={() => refresh()} 
+            content="Random APOD" 
+          /> 
+        </Grid.Column>
+      </Grid>
       <Image 
         fluid
         bordered
@@ -17,7 +38,8 @@ const Single = ({photo}) => {
         target="_blank"
         rel="noopener noreferrer"
         src={photo.photo_url} 
-        alt={photo.title} 
+        alt={photo.title}
+        style={{marginTop: 10}}
       />
       <Header as="p" content={photo.description} style={styles.text} />
     </Container>

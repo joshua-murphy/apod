@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import Photo from './Single';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Card, Container, Header, Tab } from 'semantic-ui-react';
 
@@ -8,7 +10,7 @@ class All extends Component {
   state = { photos: [], sorted: false }
 
   componentDidMount() {
-    axios.get('/api/all/')
+    axios.get('/api/photos/all/')
       .then( res => this.setState({ photos: res.data }, () => this.seperatePhotos() ) )
   }
 
@@ -80,12 +82,11 @@ class All extends Component {
               { months[key].map( photo =>
                 <Card
                   key={photo.date}
-                  href={photo.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  as={Link}
+                  to={`/apod/${photo.date}`}
                   image={photo.photo_url}
                   header={photo.title}
-                  extra={moment(photo.date).format("MMM DD, YYYY")}
+                  extra={moment(photo.date).format("MMM D, YYYY")}
                 />
               ) }
             </Card.Group>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from './NavBar';
-import Latest from './Latest';
-import Random from './Random';
+import Apod from './Apod';
+import Show from './Show'
 import All from './All';
 import NoMatch from './NoMatch';
 import { Switch, Route } from 'react-router-dom';
@@ -13,9 +13,9 @@ class App extends Component {
         <NavBar />
         <br/>
         <Switch>
-          <Route exact path='/' component={Latest} />
-          <Route exact path='/all' component={All} />
-          <Route exact path='/random' component={Random} />
+          <Route exact path='/apod/all' component={All} />
+          <Route exact path='/apod' component={Apod} />
+          <Route exact path='/apod/:date' component={Show} />
           <Route component={NoMatch} />
         </Switch>
         <br/>
