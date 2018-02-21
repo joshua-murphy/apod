@@ -13,6 +13,12 @@ class Apod extends React.Component {
       .then( res => this.setState({ currentPhoto: res.data }) )
   }
 
+  componentDidUpdate() {
+    const { state: { show, photo }, props: { match: { url } } } = this
+    photo && url === "/latest" && this.clearPhoto()
+    show && url === "/latest" && this.clearPhoto()
+  }
+  
   getPhoto = () => {
     this.props.history.push("/random")    
     this.setState({ photo: {}, show: undefined })

@@ -82,7 +82,7 @@ class All extends Component {
                 <Card
                   key={photo.date}
                   as={Link}
-                  to={`/apod/${photo.date}`}
+                  to={`/${photo.date}`}
                   image={photo.photo_url}
                   header={photo.title}
                   extra={moment(photo.date).format("MMM D, YYYY")}
