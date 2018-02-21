@@ -13,9 +13,9 @@ class App extends Component {
         <NavBar />
         <br/>
         <Switch>
-          <Route exact path='/apod/all' component={All} />
-          <Route exact path='/apod' component={Apod} />
-          <Route exact path='/apod/:date' component={Show} />
+          <Route exact path='/' component={Apod} />
+          <Route exact path='/all' component={All} />
+          <Route exact path='/:date' component={Show} />
           <Route component={NoMatch} />
         </Switch>
         <br/>
