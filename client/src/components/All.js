@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Card, Container, Header, Tab } from 'semantic-ui-react';
+import { Card, Container, Dropdown, Header } from 'semantic-ui-react';
 
 class All extends Component {
 
-  state = { photos: [], sorted: false }
+  state = { photos: [], panes: [], currentKey: moment().format("MMM").toLowerCase() }
 
   componentDidMount() {
     axios.get('/api/photos/all/')
@@ -19,94 +19,48 @@ class All extends Component {
     })
   }
 
-  //TODO: find a better way to do this
-  buildSwitch = (photo) => {
-    let month = moment(photo.date).format("MMM")
-    switch (month) {
-      case 'Jan':
-        months.jan.push(photo)
-        break;
-      case 'Feb':
-        months.feb.push(photo)
-        break;
-      case 'Mar':
-        months.mar.push(photo)
-        break;
-      case 'Apr':
-        months.apr.push(photo)
-        break;
-      case 'May':
-        months.may.push(photo)
-        break;
-      case 'Jun':
-        months.jun.push(photo)
-        break;
-      case 'Jul':
-        months.jul.push(photo)
-        break;
-      case 'Aug':
-        months.aug.push(photo)
-        break;
-      case 'Sep':
-        months.sep.push(photo)
-        break;
-      case 'Oct':
-        months.oct.push(photo)
-        break;
-      case 'Nov':
-        months.nov.push(photo)
-        break;
-      case 'Dec':
-        months.dec.push(photo)
-        break;
-      default:
-        break
-    }
-  }
-
   seperatePhotos = () => {
     this.state.photos.forEach( photo => {
-      this.buildSwitch(photo)
-    })
-    this.setState({ sorted: true }, () => this.renderPanes() )
+      months[moment(photo.date).format("MMM").toLowerCase()].push(photo)
+    } )
+    this.renderPanes()
   }
 
   renderPanes = () => {
-    const panes = Object.keys(months).reverse().map( key => {
-      if( months[key].length > 0 )
-        return {
-          menuItem: key.toUpperCase(),
-          render: () => <Tab.Pane> 
-            <Card.Group centered itemsPerRow={4}>
-              { months[key].map( photo =>
-                <Card
-                  key={photo.date}
-                  as={Link}
-                  to={`/${photo.date}`}
-                  image={photo.photo_url}
-                  header={photo.title}
-                  extra={moment(photo.date).format("MMM D, YYYY")}
-                />
-              ) }
-            </Card.Group>
-          </Tab.Pane>
-        }
-      else return null
-    })
+    const panes = Object.keys(months)
+      .reverse()
+      .filter( key => months[key].length > 0 )
+      .map( key =>
+        <Dropdown.Item
+          key={ key } text={ key.toUpperCase() }
+          onClick={ () => this.setState({ currentKey: key }) }
+        /> )
+      .filter( Boolean )
     this.setState({ panes })
   }
 
   render() {
-    const { panes } = this.state
+    const { panes, currentKey } = this.state
     return (
       <Container>
-        <Header as="h1" textAlign="center" content="APOD Collection" />
-        <Tab 
-          panes={panes} 
-          defaultActiveIndex={
-            Object.keys(months).reverse().indexOf(moment().format("MMM").toLowerCase())
-          } 
-        />
+        <Header 
+          as="h1" textAlign="center" 
+          content={`APOD ${moment(`${currentKey} 1, 2000`).format("MMMM")} Collection`} />
+        <Dropdown 
+          selection options={panes} 
+          placeholder={`Displaying results for ${currentKey.toUpperCase()}`}
+        /> <br/><br/>
+        { <Card.Group centered stackable itemsPerRow={4}>
+            { months[currentKey].map( photo =>
+              <Card
+                key={photo.date}
+                as={Link} to={`/${photo.date}`}
+                image={photo.photo_url}
+                header={photo.title}
+                extra={moment(photo.date).format("MMM D, YYYY")}
+              />
+            ) }
+          </Card.Group> }
       </Container>
     )
   }
