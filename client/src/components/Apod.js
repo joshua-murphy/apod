@@ -14,14 +14,14 @@ class Apod extends React.Component {
   }
 
   getPhoto = () => {
-    this.props.history.push("/apod/random")    
+    this.props.history.push("/random")    
     this.setState({ photo: {}, show: undefined })
     axios.get("/api/photos/random")
       .then( res => this.setState({ photo: res.data }) )
   }
 
   clearPhoto = () => {
-    this.props.history.push("/apod/latest")
+    this.props.history.push("/latest")
     this.setState({ show: undefined, photo: undefined })
   }
 

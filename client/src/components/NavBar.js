@@ -7,8 +7,8 @@ class NavBar extends Component {
   render() {
     return (
       <Menu pointing secondary>
-        <Menu.Item as={Link} to="/apod/latest" name='Latest APOD' />
-        <Menu.Item as={Link} to="/apod/all" name='APOD Collection' />
+        <Menu.Item as={Link} to="/latest" name='Latest APOD' />
+        <Menu.Item as={Link} to="/all" name='APOD Collection' />
       </Menu>
     );
   }
