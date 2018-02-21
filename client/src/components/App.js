@@ -11,7 +11,7 @@ class App extends Component {
     return (
       <div>
         <NavBar />
-        <br/>
+        <br/><br/><br/>
         <Switch>
           <Route exact path='/' component={Apod} />
           <Route exact path='/all' component={All} />

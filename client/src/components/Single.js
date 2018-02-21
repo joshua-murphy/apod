@@ -7,32 +7,36 @@ const Single = ({photo, refresh, showLatest}) => {
   return (
     <Container as={Segment} raised>
       <Grid columns={3}>
-        <Grid.Column width={2}>
+        <Grid.Column computer={2} mobile={8}>
           <Button
-            fluid
-            basic
+            fluid basic
             onClick={() => showLatest()} 
             content="Latest APOD" 
           /> 
         </Grid.Column>
-        <Grid.Column width={12}>
+        <Grid.Column only="mobile tablet" width={8}>
+          <Button 
+            fluid basic
+            onClick={() => refresh()} 
+            content="Random APOD" 
+          /> 
+        </Grid.Column>
+        <Grid.Column computer={12} mobile={16}>
           <Header as="h1" textAlign="center">
             <Header.Content content={photo.title} />
             <Header.Subheader content={moment(photo.date).format("MMM DD, YYYY")} />
           </Header>
         </Grid.Column>
-        <Grid.Column width={2}>
+        <Grid.Column only="computer" width={2}>
           <Button 
-            fluid
-            basic
+            fluid basic
             onClick={() => refresh()} 
             content="Random APOD" 
           /> 
         </Grid.Column>
       </Grid>
       <Image 
-        fluid
-        bordered
+        fluid bordered
         href={photo.url} 
         target="_blank"
         rel="noopener noreferrer"

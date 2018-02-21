@@ -6,7 +6,7 @@ class NavBar extends Component {
 
   render() {
     return (
-      <Menu pointing secondary>
+      <Menu widths={2} style={{position: 'fixed', top: 0, zIndex: 10}} >
         <Menu.Item as={Link} to="/latest" name='Latest APOD' />
         <Menu.Item as={Link} to="/all" name='APOD Collection' />
       </Menu>
