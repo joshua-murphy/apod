@@ -19,7 +19,7 @@ namespace :scrape do
       title = page.search('b').first.text.strip
       date = Date.parse(page.search('p')[1].children[0].text.strip)
       description = page.search('p')[2].text.gsub('Explanation: ', '')
-      if Photo.where(title: title, url: url, photo_url: photo_url, date: date, description: description).count == 0
+      if Photo.where(title: title, date: date).count == 0
         photo = Photo.new(title: title, url: url, photo_url: photo_url, date: date, description: description)
         puts photo.save ? 
           "\nPhoto saved to database."
