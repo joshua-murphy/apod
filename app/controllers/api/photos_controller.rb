@@ -5,15 +5,14 @@ class Api::PhotosController < ApplicationController
   end
 
   def show
-    render json: Photo.where(date: params[:date]).first
+    render json: Photo.find_by_date(params[:date])
   end
 
   def latest
-    render json: Photo.order(date: :desc).first
+    render json: Photo.last
   end
 
   def random
     render json: Photo.all.sample
   end
-
 end

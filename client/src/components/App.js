@@ -8,8 +8,12 @@ import { Switch, Route } from 'react-router-dom';
 
 class App extends Component {
   render() {
+    String.prototype.toTitleCase = function() {
+      return this.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    };
+
     return (
-      <div>
+      <div style={{ backgroundColor: '#fdf9f9' }}>
         <NavBar />
         <br/><br/><br/>
         <Switch>
